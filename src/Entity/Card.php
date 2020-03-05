@@ -24,7 +24,7 @@ class Card
     /**
      * @ORM\Column(type="integer")
      */
-    private $coup;
+    private $cost;
 
     /**
      * @ORM\Column(type="integer")
@@ -34,12 +34,17 @@ class Card
     /**
      * @ORM\Column(type="integer")
      */
-    private $vie;
+    private $HP;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\genre", inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="cards")
      */
-    private $genre;
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
+     */
+    private $user_card;
 
     public function getId(): ?int
     {
@@ -58,14 +63,14 @@ class Card
         return $this;
     }
 
-    public function getCoup(): ?string
+    public function getcost(): ?string
     {
-        return $this->coup;
+        return $this->cost;
     }
 
-    public function setCoup(string $coup): self
+    public function setcost(string $cost): self
     {
-        $this->coup = $coup;
+        $this->cost = $cost;
 
         return $this;
     }
@@ -82,26 +87,38 @@ class Card
         return $this;
     }
 
-    public function getVie(): ?int
+    public function getHP(): ?int
     {
-        return $this->vie;
+        return $this->HP;
     }
 
-    public function setVie(int $vie): self
+    public function setHP(int $HP): self
     {
-        $this->vie = $vie;
+        $this->HP = $HP;
 
         return $this;
     }
 
-    public function getGenre(): ?genre
+    public function gettype(): ?type
     {
-        return $this->genre;
+        return $this->type;
     }
 
-    public function setGenre(?genre $genre): self
+    public function settype(?type $type): self
     {
-        $this->genre = $genre;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUserCard(): ?User
+    {
+        return $this->user_card;
+    }
+
+    public function setUserCard(?User $user_card): self
+    {
+        $this->user_card = $user_card;
 
         return $this;
     }

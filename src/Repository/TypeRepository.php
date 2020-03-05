@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Genre;
+use App\Entity\Type;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Genre|null find($id, $lockMode = null, $lockVersion = null)
- * @method Genre|null findOneBy(array $criteria, array $orderBy = null)
- * @method Genre[]    findAll()
- * @method Genre[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Type|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Type|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Type[]    findAll()
+ * @method Type[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GenreRepository extends ServiceEntityRepository
+class TypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Genre::class);
+        parent::__construct($registry, Type::class);
     }
 
     // /**
-    //  * @return Genre[] Returns an array of Genre objects
+    //  * @return Type[] Returns an array of Type objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class GenreRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Genre
+    public function findOneBySomeField($value): ?Type
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')

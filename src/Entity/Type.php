@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GenreRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
  */
-class Genre
+class Type
 {
     /**
      * @ORM\Id()
@@ -21,10 +21,10 @@ class Genre
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sexe;
+    private $gender;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="genre")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="Type")
      */
     private $cards;
 
@@ -38,14 +38,14 @@ class Genre
         return $this->id;
     }
 
-    public function getSexe(): ?string
+    public function getgender(): ?string
     {
-        return $this->sexe;
+        return $this->gender;
     }
 
-    public function setSexe(string $sexe): self
+    public function setgender(string $gender): self
     {
-        $this->sexe = $sexe;
+        $this->gender = $gender;
 
         return $this;
     }
@@ -62,7 +62,7 @@ class Genre
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
-            $card->setGenre($this);
+            $card->setType($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Genre
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
             // set the owning side to null (unless already changed)
-            if ($card->getGenre() === $this) {
-                $card->setGenre(null);
+            if ($card->getType() === $this) {
+                $card->setType(null);
             }
         }
 

@@ -1,0 +1,46 @@
+/*!
+ * Start Bootstrap - Shop Homepage (https://startbootstrap.com/template-overviews/shop-homepage)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-shop-homepage/blob/master/LICENSE)
+ */
+body {
+  padding-top: 56px;
+}
+.card {
+  width:300px;
+  height:400px;
+  background-color:rgb(100,100,100);
+  border-radius:20px;
+  border:1px solid black;
+  box-shadow:0px 0px 10px #ccc;
+  text-align:center;
+  color:white;
+}
+.cardHeader {
+  height:50px;
+}
+.cardHeader span {
+  line-height:50px;
+}
+.cardImage {
+  width:250px;
+  height:250px;
+  background-position:center center;
+  background-size:cover;
+  margin:20px auto;
+  background-repeat: no-repeat;
+}
+.cardFooter {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-around;
+}
+.cardNumber {
+  background-color:white;
+  border-radius:50%;
+  width:50px;
+  height:50px;
+  text-align:center;
+  line-height:50px;
+  float:left;
+}

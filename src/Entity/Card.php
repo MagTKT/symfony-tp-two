@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,21 @@ class Card
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      */
     private $user_card;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $img;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Deck", mappedBy="cardDecks")
+     */
+    private $decks;
+
+    public function __construct()
+    {
+        $this->decks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +136,46 @@ class Card
     public function setUserCard(?User $user_card): self
     {
         $this->user_card = $user_card;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(string $img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Deck[]
+     */
+    public function getDecks(): Collection
+    {
+        return $this->decks;
+    }
+
+    public function addDeck(Deck $deck): self
+    {
+        if (!$this->decks->contains($deck)) {
+            $this->decks[] = $deck;
+            $deck->addCardt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeck(Deck $deck): self
+    {
+        if ($this->decks->contains($deck)) {
+            $this->decks->removeElement($deck);
+            $deck->removeCardt($this);
+        }
 
         return $this;
     }

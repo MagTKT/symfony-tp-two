@@ -1,0 +1,11 @@
+<title>{{ title }}</title>
+
+{% block body %}
+
+    <h1>{{ title }}</h1>
+    {{ form_start(form, {'action': path(app.request.attributes.get('_route')), 'method': 'POST', 'enctype':'multipart/form-data'}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %} 
+    

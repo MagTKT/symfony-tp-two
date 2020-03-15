@@ -30,9 +30,10 @@ class CardController extends AbstractController
     {
         $entities = $this->cardRepository->findAll();
 
-        return $this->render('card/index.html.twig', [
+        return $this->render('layout/index.html.twig', [
             'controller_name' => 'CardController',
             'entities' => $entities,
+            'title' => 'liste des cartes',
         ]);
     }
 
@@ -44,24 +45,33 @@ class CardController extends AbstractController
 
         $card = new Card();
         $form = $this->createForm(CardType::class, $card);
-
-        $cards = $em->getRepository(Card::class)->findAll();
+        
+        $cards = $this->em->getRepository(Card::class)->findAll();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $this->em = $this->getDoctrine()->getManager();
+            $img = $form->get('img')->getData();
+            $imageName = 'card-'.uniqid().'.'.$img->guessExtension();
+            $img->move(
+                $this->getParameter('cards_folder'),
+                $imageName
+            );
+            $card->setImg($imageName);
             
-            $entityManager->persist($card);
 
-            $entityManager->flush();
+            $this->em->persist($card);
+
+            $this->em->flush();
             
 
             return $this->redirectToRoute('card');
 
         }
-        return $this->render('card/new_card.html.twig', [
-            'card' => $form->createView(),
+        return $this->render('layout/form.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Création de carte',
         ]);
     }
 }

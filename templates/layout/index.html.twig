@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% if entities is defined %}
+{% for entity in entities %}
+    <div class="card">
+      <div class="cardHeader">
+          <span>{{ entity.title }} </span>
+          <span> {{ entity.type.gender }} </span>
+      </div>
+      <div class="cardImage" 
+      style="background-image: url('uploads/{{entity.img}}')"> 
+      </div>
+      <div class="cardFooter">
+          <div class="cardNumber" style="color:blue"> {{ entity.attack }} </div>
+          <div class="cardNumber" style="color:red"> {{ entity.cost }} </div>
+          <div class="cardNumber" style="color:green"> {{ entity.HP}} </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+    {% if types is defined %}
+        <h1>{{ title }}</h1>
+        {% for type in types %}
+          <p>
+            {{ type.gender }}
+          </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if user is defined %}
+        <h1>{{ title }}</h1>
+        {% for users in user %}
+          <p>
+            {{ users.email }}
+          </p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %} 
+

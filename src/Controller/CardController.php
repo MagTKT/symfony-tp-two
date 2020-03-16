@@ -46,18 +46,28 @@ class CardController extends AbstractController
         $card = new Card();
         $form = $this->createForm(CardType::class, $card);
         
-        $cards = $this->em->getRepository(Card::class)->findAll();
+        // $cards = $this->em->getRepository(Card::class)->findAll();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em = $this->getDoctrine()->getManager();
+
+            $user = $this->getUser();
+            $card->setIdCreator($user);
+
             $img = $form->get('img')->getData();
-            $imageName = 'card-'.uniqid().'.'.$img->guessExtension();
-            $img->move(
-                $this->getParameter('cards_folder'),
-                $imageName
-            );
+            if (!empty($img) || $img != null ) {
+                $imageName = 'card-'.uniqid().'.'.$img->guessExtension();
+                $img->move(
+                    $this->getParameter('cards_folder'),
+                    $imageName
+                );
+            }
+            else 
+            {
+                $imageName = 'card.png';
+            }
+
             $card->setImg($imageName);
             
 
@@ -73,5 +83,18 @@ class CardController extends AbstractController
             'form' => $form->createView(),
             'title' => 'Création de carte',
         ]);
+    }
+     /**
+     * @Route("/card/{id}", name="card_delete")
+     */
+    public function delete(Request $request, Card $card)
+    {
+        if ($this->isCsrfTokenValid('delete'.$card->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($card);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('card');
     }
 }

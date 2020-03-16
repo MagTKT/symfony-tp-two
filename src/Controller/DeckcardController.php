@@ -17,7 +17,7 @@ class DeckcardController extends AbstractController
      */
     public function index()
     {
-        return $this->render('deckcard/index.html.twig', [
+        return $this->render('layout/index.html.twig', [
             'controller_name' => 'DeckcardController',
         ]);
     }
@@ -25,7 +25,7 @@ class DeckcardController extends AbstractController
     /**
  * @Route("/adddeckcard/{card}/{deck}", name="add_deckcard")
  */
-    public function addDeckcard(Card $card, Deck $deck, EntityManagerInterface $em)
+    public function addDeckcard(Card $card, Deck $deck)
     {
 
         $deckcard = new Deckcard();
@@ -33,8 +33,8 @@ class DeckcardController extends AbstractController
         $deckcard->setCard($card);
         $deckcard->setDeck($deck);
 
-        $em->persist($deckcard);
-        $em->flush();
+        $this->em->persist($deckcard);
+        $this->em->flush();
 
         return $this->render('layout/form.html.twig', [
             'title' => 'test',
@@ -42,5 +42,18 @@ class DeckcardController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/deletedeckdard/{deckcard}", name="Deck_carddelete")
+     */
+    public function deleteCardDeck( int $deckCard)
+    {
+        $cardDeck = $this->DeckCardRepository->findOneBy(['id'=>$deckcard]);
+
+        if ($deckcard) {
+            $this->em->remove($deckcard);
+            $this->em->flush();
+        }
+        return $this->redirectToRoute('deckcard');
+    }
 }
 

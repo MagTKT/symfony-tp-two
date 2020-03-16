@@ -50,20 +50,66 @@
         $("#pageContent").load($(this).attr('href'));
     });
 
-        $('#pageContent').on('submit', 'form', function (e) {
+        $('#pageContent').on('click', 'a', function (e) {
           e.preventDefault();
-          var form = $(this);
-          $.ajax({
-          type: "POST",
-          url: form.attr('action'),
-          data: new FormData(this),
-          contentType: false,
-          processData: false,
-          success: function success(response) {
-              $("#pageContent").load($('.active').attr('href'));
-          }
+          $(".loading").css('visibility','visible');
+          $('#pageContent').load($(this).attr('href'), function() {
+              $(".loading").css('visibility','hidden');
           });
       });
+
+      // add une carte au deck
+      $('#pageContent').on('click','#cardsInStorage .card', function () {
+          let idCard = $(this).find('.idCard_add').val();
+          let idDeck = $(this).find('.idDeck_add').val();
+          $.ajax({
+              type: "GET",
+              url: "/adddeckcard/"+idCard+"/"+idDeck,
+              success: function success(response) {
+                  $("#pageContent").load("edit_deck/"+idDeck);
+              },
+              error:function(err){
+              }
+          });
+      });
+
+
+      // suppr une carte du deck
+      $('#pageContent').on('click','#cardsInDeckEdit .card', function () {
+          let idCardDeck = $(this).find('.idCardDeck_delete').val();
+          let idDeck = $(this).find('.idDeck_delete').val();
+          $(".loading").css('visibility','visible');
+          $.ajax({
+              type: "GET",
+              url: "/deletedeckcard/"+idCardDeck,
+              success: function success(response) {
+                  $("#pageContent").load("edit_deck/"+idDeck);
+              },
+              error:function(err){
+              }
+          });
+      });
+
+      // gestion des formulaires
+      $('#pageContent').on('submit', 'form', function (e) {
+          e.preventDefault();
+          $(".loading").css('visibility','visible');
+          var form = $(this);
+
+          $.ajax({
+              type: "POST",
+              url: form.attr('action'),
+              data: new FormData(this),
+              contentType: false,
+              processData: false,
+              success: function success(response) {
+                  $("#pageContent").load($('.select').attr('href'), function() {
+                      $(".loading").css('visibility','hidden');
+                  });
+              }
+          })
+      })
+
     </script>
 
 {% endblock %}

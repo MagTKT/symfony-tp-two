@@ -20,23 +20,32 @@
     {% endfor %}
 {% endif %}
 
-    {% if types is defined %}
-        <h1>{{ title }}</h1>
-        {% for type in types %}
-          <p>
-            {{ type.gender }}
-          </p>
-        {% endfor %}
-    {% endif %}
+{% if types is defined %}
+    <h1>{{ title }}</h1>
+    {% for type in types %}
+      <p>
+        {{ type.gender }}
+      </p>
+    {% endfor %}
+{% endif %}
 
-    {% if user is defined %}
-        <h1>{{ title }}</h1>
-        {% for users in user %}
-          <p>
-            {{ users.email }}
-          </p>
-        {% endfor %}
-    {% endif %}
+{% if user is defined %}
+    <h1>{{ title }}</h1>
+    {% for users in user %}
+      <p>
+        {{ users.email }}
+      </p>
+    {% endfor %}
+{% endif %}
+
+{% if deck is defined %}
+  <h1>{{ title }}</h1>
+  {% for decks in deck %}
+    <p>
+      {{ deck.title }}
+    </p>
+  {% endfor %}
+{% endif %}
 
 {% endblock %} 
 

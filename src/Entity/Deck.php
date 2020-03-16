@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DecksRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DeckRepository")
  */
-class Decks
+class Deck
 {
     /**
      * @ORM\Id()
@@ -21,16 +21,21 @@ class Decks
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $deckname;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CardDeck", mappedBy="decks", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Deckcard", mappedBy="deck")
      */
-    private $cardDecks;
+    private $deckcards;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="decks")
+     */
+    private $creator;
 
     public function __construct()
     {
-        $this->cardDecks = new ArrayCollection();
+        $this->deckcards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -38,47 +43,58 @@ class Decks
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getDeckname(): ?string
     {
-        return $this->title;
+        return $this->deckname;
     }
 
-    public function setName(string $title): self
+    public function setDeckname(string $deckname): self
     {
-        $this->title = $title;
+        $this->deckname = $deckname;
 
         return $this;
     }
 
     /**
-     * @return Collection|CardDeck[]
+     * @return Collection|Deckcard[]
      */
-    public function getCardDecks(): Collection
+    public function getDeckcards(): Collection
     {
-        return $this->cardDecks;
+        return $this->deckcards;
     }
 
-    public function addCardDeck(CardDeck $cardDeck): self
+    public function addDeckcard(Deckcard $deckcard): self
     {
-        if (!$this->cardDecks->contains($cardDeck)) {
-            $this->cardDecks[] = $cardDeck;
-            $cardDeck->setIdDeck($this);
+        if (!$this->deckcards->contains($deckcard)) {
+            $this->deckcards[] = $deckcard;
+            $deckcard->setDeck($this);
         }
 
         return $this;
     }
 
-    public function removeCardDeck(CardDeck $cardDeck): self
+    public function removeDeckcard(Deckcard $deckcard): self
     {
-        if ($this->cardDecks->contains($cardDeck)) {
-            $this->cardDecks->removeElement($cardDeck);
+        if ($this->deckcards->contains($deckcard)) {
+            $this->deckcards->removeElement($deckcard);
             // set the owning side to null (unless already changed)
-            if ($cardDeck->getIdDeck() === $this) {
-                $cardDeck->setIdDeck(null);
+            if ($deckcard->getDeck() === $this) {
+                $deckcard->setDeck(null);
             }
         }
 
         return $this;
     }
 
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
 }

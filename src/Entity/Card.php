@@ -53,10 +53,11 @@ class Card
      */
     private $img;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Deck", mappedBy="cardDecks")
+     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Deckcard", mappedBy="card", orphanRemoval=true)
      */
-    private $decks;
+    private $deckcards;
+
 
     public function __construct()
     {
@@ -152,29 +153,24 @@ class Card
         return $this;
     }
 
-    /**
-     * @return Collection|Deck[]
-     */
-    public function getDecks(): Collection
+    public function addDeckcard(Deckcard $deckcard): self
     {
-        return $this->decks;
-    }
-
-    public function addDeck(Deck $deck): self
-    {
-        if (!$this->decks->contains($deck)) {
-            $this->decks[] = $deck;
-            $deck->addCardt($this);
+        if (!$this->deckcards->contains($deckcard)) {
+            $this->deckcards[] = $deckcard;
+            $deckcard->setCard($this);
         }
 
         return $this;
     }
 
-    public function removeDeck(Deck $deck): self
+    public function removeDeckcard(Deckcard $deckcard): self
     {
-        if ($this->decks->contains($deck)) {
-            $this->decks->removeElement($deck);
-            $deck->removeCardt($this);
+        if ($this->deckcards->contains($deckcard)) {
+            $this->deckcards->removeElement($deckcard);
+            // set the owning side to null (unless already changed)
+            if ($deckcard->getCard() === $this) {
+                $deckcard->setCard(null);
+            }
         }
 
         return $this;

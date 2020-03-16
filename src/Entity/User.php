@@ -41,10 +41,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user_card")
      */
     private $cards;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Deck", mappedBy="creator")
+     */
+    private $decks;
 
     public function __construct()
     {
         $this->cards = new ArrayCollection();
+        $this->decks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +156,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($card->getUserCard() === $this) {
                 $card->setUserCard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Deck[]
+     */
+    public function getDecks(): Collection
+    {
+        return $this->decks;
+    }
+
+    public function addDeck(Deck $deck): self
+    {
+        if (!$this->decks->contains($deck)) {
+            $this->decks[] = $deck;
+            $deck->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeck(Deck $deck): self
+    {
+        if ($this->decks->contains($deck)) {
+            $this->decks->removeElement($deck);
+            // set the owning side to null (unless already changed)
+            if ($deck->getCreator() === $this) {
+                $deck->setCreator(null);
             }
         }
 
